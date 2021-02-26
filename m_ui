@@ -1,0 +1,88 @@
+ Simple pygame program
+
+# Import and initialize the pygame library
+import pygame
+import numpy as np
+
+from pygame.locals import (
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+    MOUSEBUTTONDOWN,
+    MOUSEBUTTONUP
+)
+
+side=300
+TL=250-side/2
+BR=250+side/2
+s_side=side/9
+
+class Cell:
+    def __init__(self,number,colour,position,size):
+        self.size = size
+        self.colour = colour
+        self.number = number
+        self.position = position
+        self.size = size
+
+
+    def Render(self,screen):
+        pygame.draw.rect(screen,self.colour,(self.position,self.size),width=1)
+
+    def drawCell(screen, colour):
+        cell = [Cell(i, colour, (TL+1+s_side*(i%9), TL+1+s_side*(np.floor(i/9))), (s_side,s_side))
+                for i in range(81)] 
+        for c in cell:
+            c.Render(screen) # use items in disk
+        return cell # for use elsewhere
+
+    #for cols in range(9):
+        #for rows in range(9):
+            #rects[cols,rows]=pygame.draw.rect(screen, (0,0,0), (TL+1+s_side*cols, TL+1+s_side*rows,s_side,s_side),width=1)
+            #LR_borders.append((TL,TL+s_side*cols))
+            #TB_borders.append((TL,TL+s_side*rows))
+    
+    #if event.type == pygame.MOUSEBUTTONDOWN:
+        #if pygame.collidepoint(pygame.mouse.get_pos())==True:
+pygame.init()
+
+# Set up the drawing window
+screen = pygame.display.set_mode([500, 500])
+
+# Run until the user asks to quit
+running = True
+while running:
+
+    # Did the user click the window close button?
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Fill the background with white
+    screen.fill((255, 255, 255))
+
+    
+    # Draw the outside rectangle
+    pygame.draw.rect(screen, (0,0,0), (TL, TL,side,side),width=2)
+
+    # Draw the smaller rectangles
+    LR_borders=[]
+    TB_borders=[]
+
+    colour=((0,0,0))
+
+    Cells=Cell.drawCell(screen, colour)
+
+    
+
+
+
+    # Flip the display
+    pygame.display.flip()
+
+# Done! Time to quit.
+pygame.quit()
